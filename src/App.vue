@@ -22,8 +22,7 @@ export default {
   },
   methods: {
     onHandleBeforeStart(config) {
-      console.log("running ,", config);
-
+      console.log(config);
       this.statusMatch = "match";
     },
   },
