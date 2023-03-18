@@ -6,6 +6,12 @@
   <interact-screen
     v-if="statusMatch === 'match'"
     :cardsContext="settings.cardsContext"
+    @onFinish="onGetResult"
+  />
+  <result-screen
+    v-if="statusMatch === 'result'"
+    :timer="timer"
+    @onStartAgain="statusMatch = 'default'"
   />
 </template>
 
@@ -13,11 +19,13 @@
 import MainScreen from "./components/MainScreen.vue";
 import InteractScreen from "./components/InteractScreen.vue";
 import { shuffled } from "./utils/array.js";
+import ResultScreen from "./components/ResultScreen.vue";
 export default {
   name: "App",
   components: {
     MainScreen,
     InteractScreen,
+    ResultScreen,
   },
   data() {
     return {
@@ -26,6 +34,7 @@ export default {
         cardsContext: [],
         startedAt: null,
       },
+      timer: 0,
       statusMatch: "default",
     };
   },
@@ -45,6 +54,11 @@ export default {
       this.settings.startedAt = new Date().getTime();
       console.log(this.settings.cardsContext);
       this.statusMatch = "match";
+    },
+
+    onGetResult() {
+      this.timer = new Date().getTime() - this.settings.startedAt;
+      this.statusMatch = "result";
     },
   },
 };
